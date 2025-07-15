@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Branchez</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+</head>
+<body class="layout-page">
+    <div class="layout-container">
+        <!-- Video for the click animation sequence -->
+        <!-- Autoplay and playsinline are important for mobile compatibility. -->
+        <!-- The 'muted' attribute has been removed to allow video sound. -->
+        <video id="layout-animation-video" class="layout-animation-video" autoplay playsinline>
+            <!-- The src will be set by JavaScript dynamically based on device -->
+            <source id="layout-video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
