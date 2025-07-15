@@ -1,0 +1,489 @@
+/* ========== GENERAL STYLES ========== */
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+/* ========== GENERAL STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
+    color: #FFFFFF;
+    background-color: #0D0D0D;
+}
+
+/* ========== Services PAGE STYLES ========== */
+.services-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: transparent;
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.header.scrolled {
+    background-color: rgba(13, 13, 13, 0.9);
+}
+
+.header-logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Navigation Styles */
+.navbar {
+    display: flex;
+    gap: 30px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.navbar .nav-item {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 5px 0;
+}
+
+.navbar .nav-item.active {
+    text-decoration: underline;
+}
+
+.navbar .nav-item:hover:not(.active) {
+    color: #99CA3C;
+    text-decoration: underline;
+}
+
+.navbar .nav-item.active:hover {
+    transform: scale(0.9);
+}
+
+/* Mobile Navigation Elements */
+.mobile-nav-toggle, .mobile-login-icon {
+    display: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Login Button */
+.login-button {
+    background-color: #0D0D0D;
+    border: 1px solid #99CA3C;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.login-button .login-icon {
+    height: 16px;
+    transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: white;
+    color: #99CA3C;
+}
+
+.login-button:hover::after {
+    content: "→";
+    font-size: 18px;
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background-color: rgba(13, 13, 13, 0.95);
+    overflow-x: hidden;
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.mobile-nav-logo {
+    max-width: 120px;
+    height: auto;
+}
+
+.closebtn {
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.mobile-nav-item {
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.mobile-nav-item:hover {
+    color: #99CA3C;
+}
+
+/* ========== BODY CONTENT STYLES ========== */
+.services-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+    flex-grow: 1; /* Allow content to take available space */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: calc(100vh - 90px); /* Adjust based on header height */
+    justify-content: center; /* Center content vertically */
+}
+
+.services-page-title {
+    font-family: 'Changa', sans-serif;
+    font-weight: 700;
+    font-size: 96px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 50px;
+    max-width: 542px;
+    height: auto; /* Let height adjust naturally */
+    width: 100%; /* Ensure responsiveness */
+}
+
+/* Horizontal Scroll Container for Images */
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent items from wrapping */
+    padding: 20px 0; /* Add vertical padding */
+    gap: 30px; /* Space between cards */
+    width: 100%; /* Take full width */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    position: relative; /* For positioning scroll indicator */
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Service Card Styles */
+.service-card {
+    flex: 0 0 auto; /* Changed from flex: 0 0 auto; to allow shrinking */
+    width: 346px; /* Default fixed width for desktop */
+    height: 473px; /* Default fixed height for desktop */
+    background-color: #0D0D0D; /* Dark background for cards */
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 4px 8px #0D0D0D;
+    transition: transform 0.3s ease-in-out, z-index 0.1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 1000px;
+}
+
+/* Card Inner for 3D flip */
+.service-card .card-inner {
+    width: 100%;
+    height: calc(100% - 40px); /* Adjust height for service name text */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.service-card .card-front,
+.service-card .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.service-card .card-back {
+    transform: rotateY(180deg);
+}
+
+/* Image specific styles within card-front/back */
+.service-card .card-front img,
+.service-card .card-back img {
+    width: 100%;
+    height: 100%; /* Ensures images fill the card face without overflow */
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+}
+
+/* Control visibility of specific images */
+.service-card .mobile-flip-img,
+.service-card .desktop-flip-img {
+    display: none;
+}
+.service-card .original-img {
+    display: block;
+}
+
+
+/* Desktop Hover: Make card bigger and flip to desktop-flip-img */
+@media (min-width: 769px) {
+    .service-card:hover {
+        transform: scale(1.1);
+        z-index: 10;
+        overflow: visible;
+        width: 616px;
+        height: 473px;
+        border-radius: 15px;
+    }
+    .service-card:hover .card-inner {
+        transform: rotateY(180deg);
+    }
+    .service-card .flip-icon {
+        display: none;
+    }
+
+    /* Image visibility on desktop hover */
+    .service-card:hover .original-img {
+        display: none;
+    }
+    .service-card:hover .desktop-flip-img {
+        display: block;
+    }
+    .service-card:hover .mobile-flip-img {
+        display: none;
+    }
+}
+
+/* Mobile/Tablet Click: Flip the card (same size) to mobile-flip-img */
+@media (max-width: 768px) {
+    .service-card.flipped .card-inner {
+        transform: rotateY(180deg);
+    }
+    .service-card .flip-icon {
+        display: flex;
+    }
+    /* Ensure cards do not scale on mobile/tablet */
+    .service-card {
+        transform: none !important;
+        z-index: auto !important;
+        overflow: hidden;
+        /* Make card responsive to viewport width */
+        width: calc(100vw - 60px); /* 100vw minus 30px padding on each side of container */
+        max-width: 346px; /* Cap at original desktop width */
+        height: auto; /* Allow height to adjust */
+        aspect-ratio: 346 / 473; /* Maintain aspect ratio (desktop original) */
+    }
+
+    /* Explicitly set default image visibility for mobile/tablet */
+    /* This is the key change to ensure the original image is shown by default */
+    .service-card .original-img {
+        display: block !important; /* Force original to be visible */
+    }
+    .service-card .mobile-flip-img,
+    .service-card .desktop-flip-img {
+        display: none !important; /* Force flip images to be hidden */
+    }
+
+    /* Overrides when the card is explicitly flipped on mobile/tablet */
+    .service-card.flipped .original-img {
+        display: none !important; /* Hide original when flipped */
+    }
+    .service-card.flipped .mobile-flip-img {
+        display: block !important; /* Show mobile flipped image when flipped */
+    }
+    .service-card.flipped .desktop-flip-img {
+        display: none !important; /* Ensure desktop flip image is hidden */
+    }
+}
+
+
+.service-card .flip-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Scroll Indicator Bar */
+.scroll-title {
+font-family:sans-serif,Arial;
+font-weight: 700;
+font-style: Bold;
+font-size: 16px;
+line-height: 35px;
+letter-spacing: 5%;
+text-transform: uppercase;
+color: #D6D6D6;
+;
+}
+
+.scroll-indicator-container {
+    width: 80%;
+    max-width: 600px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 4px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.scroll-indicator-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #99CA3C;
+    border-radius: 4px;
+    transition: width 0.1s ease-out;
+}
+
+.scroll-percentage {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9em;
+    color: #FFFFFF;
+}
+
+
+/* ========== RESPONSIVE STYLES ========== */
+@media screen and (max-width: 768px) {
+    .navbar,
+    .login-button {
+        display: none;
+    }
+
+    .mobile-services-title, .mobile-nav-toggle, .mobile-login-icon {
+        display: block;
+    }
+
+    .mobile-login-icon {
+        margin-right: 20px;
+    }
+
+    .header {
+        padding: 15px 5%;
+    }
+
+    .header-logo {
+        margin-bottom: 0;
+    }
+
+    .services-page-title {
+        font-size: 64px;
+        margin-bottom: 30px;
+    }
+
+    /* Ensure card images are not affected by desktop hover rules on mobile/tablet */
+    .service-card .card-front,
+    .service-card .card-back {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 10px 3%;
+    }
+
+    .header-logo img {
+        max-width: 100px;
+    }
+
+    .mobile-services-title {
+        font-size: 1.5em;
+    }
+
+    .mobile-login-icon,
+    .hamburger-icon {
+        font-size: 1.5em;
+    }
+
+    .mobile-nav-overlay a {
+        font-size: 20px;
+    }
+    .mobile-nav-overlay .closebtn {
+        font-size: 45px;
+    }
+
+    .services-page-title {
+        font-size: 48px;
+    }
+
+    .service-card {
+        /* Adjust width to be more flexible for very small screens */
+        width: calc(100vw - 40px); /* 100vw minus 20px padding on each side of container */
+        max-width: 250px; /* Cap at the smaller desired mobile size */
+        height: auto; /* Allow height to adjust */
+        /* Adjusted aspect-ratio for a more appropriate portrait shape for mobile images */
+        aspect-ratio: 3 / 4; /* Changed from 250 / 200 (1.25) to 3 / 4 (0.75) */
+    }
+
+    .service-card .flip-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .service-card .service-name {
+        font-size: 1em;
+    }
+}
