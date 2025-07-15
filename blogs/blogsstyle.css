@@ -1,0 +1,611 @@
+/* ========== GENERAL STYLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden;
+    color: #FFFFFF;
+    background-color: #0D0D0D;
+}
+
+/* ========== HOME PAGE STYLES ========== */
+.home-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: transparent;
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.header.scrolled {
+    background-color: rgba(13, 13, 13, 0.9);
+}
+
+.header-logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Navigation Styles */
+.navbar {
+    display: flex;
+    gap: 30px;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.navbar .nav-item {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 5px 0;
+}
+
+.navbar .nav-item.active {
+    text-decoration: underline;
+}
+
+.navbar .nav-item:hover:not(.active) {
+    color: #99CA3C;
+    text-decoration: underline;
+}
+
+.navbar .nav-item.active:hover {
+    transform: scale(0.9);
+}
+
+/* Mobile Navigation Elements */
+.mobile-nav-toggle, .mobile-login-icon {
+    display: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Login Button */
+.login-button {
+    background-color: #0D0D0D;
+    border: 1px solid #99CA3C;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.login-button .login-icon {
+    height: 16px;
+    transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: white;
+    color: #99CA3C;
+}
+
+.login-button:hover .login-icon {
+    opacity: 0;
+}
+
+.login-button:hover::after {
+    content: "→";
+    font-size: 18px;
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background-color: rgba(13, 13, 13, 0.95);
+    overflow-x: hidden;
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.mobile-nav-logo {
+    max-width: 120px;
+    height: auto;
+}
+
+.closebtn {
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.mobile-nav-item{
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+    
+}
+
+.mobile-nav-item:hover {
+    color: #99CA3C;
+}
+
+/* ========== BLOGS PAGE SPECIFIC STYLES ========== */
+.blogs-main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 5%; /* Responsive padding */
+    flex-grow: 1;
+}
+
+.blogs-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: 0.2px;
+    color: #FFFFFF;
+    margin-bottom: 20px; /* Adjusted from top: 20px to margin-bottom */
+    width: 100%; /* Ensure it takes full width */
+    max-width: 398.57px; /* Max width as per layout */
+    text-align: center;
+}
+
+.blogs-description {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0px;
+    color: #A8A8A8;
+    margin-bottom: 50px; /* Space below description */
+    width: 100%; /* Ensure it takes full width */
+    max-width: 1745.53px; /* Max width as per layout */
+    text-align: left;
+}
+
+.blog-cards-container {
+    display: flex;
+    flex-direction: column; /* Stack up-div and down-div */
+    gap: 30px; /* Space between rows of cards */
+    width: 100%;
+    max-width: 1200px; /* Max width for the entire card grid */
+}
+
+.up-div, .down-div {
+    display: flex;
+    gap: 30px; /* Space between cards in a row */
+    width: 100%;
+    justify-content: center; /* Center cards horizontally */
+    flex-wrap: wrap; /* Allow cards to wrap to the next line on smaller screens */
+}
+
+.blog-card {
+    position: relative;
+    width: 480px; /* Base width for desktop */
+    height: 320px; /* Base height for desktop */
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+    flex-shrink: 0; /* Prevent shrinking below base size */
+    flex-grow: 1; /* Allow growing to fill space */
+    max-width: 100%; /* Ensure it doesn't overflow parent */
+}
+
+.blog-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area, cropping if necessary */
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.blog-card:hover img {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.heart-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #FFFFFF; /* Default white */
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s ease;
+}
+
+.heart-icon.liked {
+    color: #91CC1F; /* Green when liked */
+}
+
+.blog-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); /* Gradient overlay */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 5;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.blog-card-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.4;
+    color: #FFFFFF;
+    margin: 0;
+    flex-grow: 1;
+    padding-right: 10px; /* Space for arrow */
+}
+
+.arrow-icon {
+    font-size: 24px;
+    color: #FFFFFF;
+    transition: transform 0.3s ease-in-out;
+}
+
+.initial-arrow {
+    transform: rotate(45deg); /* 45 degree angle */
+}
+
+.hover-arrow {
+    transform: rotate(0deg); /* 0 degree angle */
+}
+
+/* Overlay for hover/click effect */
+.blog-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    border-radius: 15px;
+    text-align: left;
+}
+
+.blog-card-overlay .overlay-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500; /* Medium weight for full text */
+    font-size: 18px;
+    line-height: 1.6;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+}
+
+.blog-card-overlay .arrow-icon {
+    font-size: 30px; /* Larger arrow for overlay */
+    color: #91CC1F; /* Green arrow */
+}
+
+/* Desktop Hover Effect */
+@media (min-width: 769px) {
+    .blog-card:hover .blog-card-content {
+        opacity: 0; /* Hide initial content on hover */
+    }
+
+    .blog-card:hover .blog-card-overlay {
+        opacity: 1; /* Show overlay on hover */
+        visibility: visible;
+    }
+}
+
+/* Mobile/Tablet Click Effect */
+@media (max-width: 768px) {
+    .blog-card.flipped .blog-card-content {
+        opacity: 0; /* Hide initial content when flipped */
+    }
+
+    .blog-card.flipped .blog-card-overlay {
+        opacity: 1; /* Show overlay when flipped */
+        visibility: visible;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #99CA3C; /* Changed to green */
+    color: #0D0D0D; /* Text color for footer */
+    padding: 40px 5%; /* Responsive padding */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+    gap: 30px; /* Space between columns */
+    align-items: flex-start; /* Align columns to the top */
+}
+
+.footer-column {
+    flex: 1; /* Distribute space equally */
+    min-width: 250px; /* Minimum width before wrapping */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-left {
+    align-items: flex-start; /* Left align content */
+}
+
+.footer-center {
+    align-items: center; /* Center align content */
+    text-align: center;
+}
+
+.footer-right {
+    align-items: flex-end; /* Right align content */
+    text-align: right;
+}
+
+.footer-logo {
+    max-width: 120px;
+    height: auto;
+    filter: brightness(0) saturate(100%) invert(10%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%); /* Make logo dark for green background */
+}
+
+.contact-info p,
+.location-info p,
+.email-info p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0; /* Remove default margin */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.contact-info i,
+.location-info i,
+.email-info i {
+    color: #0D0D0D; /* Icon color */
+    font-size: 18px;
+}
+
+/*.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px; /* Space below nav in center column */
+
+.footer-nav {
+    display: flex; /* Changed to flex */
+    flex-direction: row; /* Changed to row for horizontal layout */
+    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    gap: 20px; /* Space between nav items */
+    margin-bottom: 20px; /* Space below nav in center column */
+}
+
+.footer-nav a {
+    color: #0D0D0D;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: #FFFFFF; /* White on hover */
+}
+
+.social-media-icons {
+    display: flex;
+    gap: 15px;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.social-media-icons a {
+    color: #0D0D0D;
+    transition: color 0.3s ease;
+}
+
+.social-media-icons a:hover {
+    color: #FFFFFF; /* White on hover */
+}
+
+/* ========== RESPONSIVE STYLES ========== */
+@media screen and (max-width: 1024px) {
+    .header {
+        padding: 15px 3%; /* Adjust header padding */
+    }
+    .header-logo img {
+        max-width: 120px; /* Smaller logo on tablets */
+    }
+    .navbar {
+        gap: 20px; /* Reduce nav item gap */
+    }
+    .navbar .nav-item {
+        font-size: 1em; /* Smaller nav font size */
+    }
+    .login-button {
+        padding: 8px 15px; /* Smaller login button */
+        font-size: 1em;
+    }
+
+    .blogs-title {
+        font-size: 32px;
+        line-height: 40px;
+    }
+    .blogs-description {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .blog-card {
+        width: calc(50% - 15px); /* Two cards per row with gap */
+        height: 280px; /* Adjust height for tablets */
+    }
+    .blog-card-text {
+        font-size: 18px;
+    }
+    .blog-card-overlay .overlay-text {
+        font-size: 16px;
+    }
+
+    /* Footer responsive adjustments */
+    .footer {
+        flex-direction: column; /* Stack footer columns vertically */
+        align-items: center; /* Center columns */
+        text-align: center;
+    }
+
+    .footer-column {
+        min-width: 100%; /* Full width for stacked columns */
+        align-items: center; /* Center content within columns */
+        text-align: center;
+    }
+
+    .footer-left .contact-info p,
+    .footer-right .email-info p {
+        justify-content: center; /* Center phone/email lines */
+    }
+
+    .social-media-icons {
+        justify-content: center; /* Center social icons */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar,
+    .login-button {
+        display: none; /* Hide desktop nav and login button */
+    }
+    
+    .mobile-nav-toggle, .mobile-login-icon {
+        display: block; /* Show mobile elements */
+    }
+    
+    .header {
+        padding: 15px; /* Adjust header padding for mobile */
+    }
+    
+    .header-logo img {
+        max-width: 100px; /* Smaller logo on mobile */
+    }
+
+    .blogs-title {
+        font-size: 28px;
+        line-height: 36px;
+    }
+    .blogs-description {
+        font-size: 18px;
+        line-height: 26px;
+    }
+
+    .blog-card {
+        width: 90%; /* Single card per row on mobile */
+        height: 250px; /* Adjust height for mobile */
+    }
+    .blog-card-text {
+        font-size: 16px;
+    }
+    .blog-card-overlay .overlay-text {
+        font-size: 14px;
+    }
+
+    /* Footer responsive adjustments */
+    .footer-logo {
+        max-width: 90px;
+    }
+    .contact-info p,
+    .location-info p,
+    .email-info p,
+    .footer-nav a {
+        font-size: 13px;
+    }
+    .social-media-icons {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-logo img {
+        max-width: 80px; /* Even smaller logo on very small mobiles */
+    }
+    
+    .blogs-title {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    .blogs-description {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .blog-card {
+        width: 95%; /* Make cards almost full width */
+        height: 220px; /* Further adjust height */
+    }
+    .blog-card-text {
+        font-size: 14px;
+    }
+    .blog-card-overlay .overlay-text {
+        font-size: 12px;
+    }
+
+    /* Footer adjustments for very small screens */
+    .footer-logo {
+        max-width: 70px;
+    }
+    .contact-info p,
+    .location-info p,
+    .email-info p,
+    .footer-nav a {
+        font-size: 12px;
+    }
+    .social-media-icons {
+        font-size: 16px;
+    }
+}
