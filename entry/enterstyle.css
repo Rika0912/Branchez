@@ -1,0 +1,488 @@
+/* General Styles for Sign Up, Log In, Forget Password Pages */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #DADAE8;
+    overflow-y: auto; /* Changed from hidden to auto to allow vertical scrolling */
+}
+
+/* Background Image Container */
+.background-image-container {
+    background-image: url('image.png'); /* Placeholder, replace with your actual background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    min-height: 100vh; /* Changed from height to min-height to allow background to expand with content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute; /* Changed from fixed to absolute so background scrolls with content */
+    top: 0;
+    left: 0;
+    /* Ensure background covers the entire scrollable content area */
+    /* This will be handled by body's min-height and background-size: cover */
+}
+
+/* Central Form Container */
+.form-container {
+    width: 755px; /* Fixed width as per layout */
+    height: auto; /* Changed from fixed height to auto to allow content to dictate height */
+    min-height: 609px; /* Ensure a minimum height for larger screens */
+    max-height: 95vh; /* Limit max height to viewport height for forms that get very long */
+    /*overflow-y: auto;  Enable scrolling within the form container if its content overflows */
+    border-radius: 32px;
+    background-color: #0D0D0D;
+    padding: 41px 128px 128px 128px; /* Top, Right, Bottom, Left */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: flex-start; /* Align content to the top */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Optional: subtle shadow */
+    position: relative; /* For positioning, though flexbox handles centering */
+    z-index: 10; /* Ensure form is above the background image */
+}
+
+/* Adjust padding for smaller screens to prevent overflow */
+@media (max-width: 900px) {
+    .form-container {
+        padding: 30px 50px; /* Reduce padding */
+        width: 90%; /* Make it responsive */
+        height: auto; /* Allow height to adjust */
+        max-width: 600px; /* Max width for tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px 20px; /* Further reduce padding for mobile */
+        width: 95%; /* Take more width on small screens */
+        border-radius: 20px;
+    }
+}
+
+
+/* H1 Title Styles */
+.form-container h1 {
+    font-family: 'Changa', sans-serif;
+    font-weight: 600;
+    font-size: 50px;
+    line-height: 100%; /* leading-trim: NONE; */
+    letter-spacing: 0.1px;
+    text-align: center;
+    color: #DADAE8;
+    margin-bottom: 40px; /* Space below the title */
+    width: 171px; /* Fixed width as per layout */
+    height: 92px; /* Fixed height as per layout */
+    display: flex; /* Use flex to center text vertically if needed */
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* Make h1 responsive for tablets and mobiles */
+@media (max-width: 900px) { /* Changed breakpoint from 600px to 900px */
+    .form-container h1 {
+        font-size: 40px; /* Adjust for tablets/mobile */
+        margin-bottom: 30px;
+        width: auto; /* Allow width to be flexible */
+        height: auto;
+        white-space: normal; /* Allow wrapping on tablets and smaller screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .form-container h1 {
+        font-size: 36px; /* Further adjust for smaller mobile screens */
+    }
+}
+
+/* Form Input Group Styles */
+.input-group {
+    position: relative;
+    width: 100%; /* Full width of the form area */
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 50px; /* Left padding for icon */
+    border: 1px solid #969AB8;
+    border-radius: 8px;
+    background-color: transparent; /* Transparent background */
+    color: #DADAE8; /* Text color */
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input::placeholder {
+    color: #969AB8; /* Placeholder text color */
+}
+
+.input-group input:focus {
+    border-color: #91CC1F; /* Highlight border on focus */
+}
+
+.input-group .input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #969AB8; /* Icon color */
+    font-size: 18px;
+}
+
+/* Sign Up Button */
+.signup-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #91CC1F;
+    color: #0D0D0D;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: 20px; /* Space above the button */
+}
+
+.signup-button:hover {
+    background-color: #DADAE8;
+    color: #0D0D0D; /* Text color remains dark for contrast */
+}
+
+/* OR Divider */
+.or-divider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 30px 0; /* Space above and below */
+}
+
+.divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #969AB8;
+    border: none;
+}
+
+.or-text {
+    padding: 0 15px;
+    color: #969AB8;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Social Login Buttons */
+.social-login-buttons {
+    display: flex;
+    gap: 15px; /* Space between social buttons */
+    width: 100%;
+    justify-content: center; /* Center buttons if they don't fill full width */
+    margin-bottom: 30px;
+}
+
+@media (max-width: 600px) {
+    .social-login-buttons {
+        flex-direction: column; /* Stack buttons vertically on mobile */
+        gap: 10px;
+    }
+}
+
+.social-button {
+    flex: 1; /* Distribute space evenly */
+    padding: 12px;
+    border: 1px solid #969AB8;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #DADAE8;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.social-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight background on hover */
+    border-color: #91CC1F;
+    color: #91CC1F;
+}
+
+/* Login Prompt */
+.login-prompt {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    text-align: center;
+    color: #969AB8;
+    margin-top: auto; /* Push to the bottom of the flex container */
+    padding-top: 20px; /* Add some space from elements above */
+}
+
+.login-prompt .login-link {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    text-align: center;
+    color: #A3CF50;
+    text-decoration: none; /* No underline by default */
+    transition: text-decoration 0.3s ease;
+}
+
+.login-prompt .login-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Code Input Group (New) */
+.code-input-group {
+    --code-input-gap: 15px; /* Define gap as a CSS variable */
+    display: flex;
+    justify-content: center;
+    gap: var(--code-input-gap);
+    margin-bottom: 30px;
+    width: 100%; /* Take full width of parent */
+    flex-wrap: nowrap; /* IMPORTANT: Keep on one line */
+}
+
+.code-input {
+    width: calc((100% - (4 * var(--code-input-gap))) / 5); /* Distribute width evenly */
+    max-width: 50px; /* Maintain max size */
+    min-width: 35px; /* Allow shrinking but not too small */
+    height: 50px; /* Keep height fixed for cube appearance */
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #DADAE8;
+    background-color: transparent;
+    border: 1px solid #969AB8;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.code-input:focus {
+    border-color: #91CC1F;
+    box-shadow: 0 0 8px rgba(145, 204, 31, 0.5);
+    background-color: #DADAE8;
+}
+
+.code-input.error { /* Style for error state */
+    border-color: #FF4444;
+    box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+
+/* Adjust code inputs for smaller screens */
+@media (max-width: 480px) {
+    .code-input-group {
+        --code-input-gap: 8px; /* Reduce gap on smaller screens */
+    }
+    .code-input {
+        min-width: 28px; /* Further reduce min-width if necessary */
+        height: 45px; /* Adjust height if needed */
+        font-size: 20px;
+    }
+}
+
+/* === Custom Message Modal Styles === */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Optional blur effect */
+}
+
+.modal.show-modal {
+    display: flex; /* Show modal when 'show-modal' class is added */
+}
+
+.modal-content {
+    background-color: #0D0D0D;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; /* Responsive width */
+    max-width: 400px; /* Max width for larger screens */
+    border-radius: 15px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease-out; /* Simple fade-in animation */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    word-wrap: break-word; /* Ensure long messages wrap */
+}
+
+.modal-content .close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close-button:hover,
+.modal-content .close-button:focus {
+    color: #DADAE8;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Forgot Password Prompt (New for Login Page) */
+.forgot-password-prompt {
+    width: 100%;
+    text-align: right; /* Align to the right */
+    margin-top: 10px; /* Space above */
+    margin-bottom: 20px; /* Space below */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #969AB8;
+}
+
+.forgot-password-prompt .forgot-password-link {
+    color: #A3CF50;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease;
+}
+
+.forgot-password-prompt .forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Verification Code Prompt (for Forget Password Page) */
+.verification-code-prompt {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #FFFFFF;
+    width: 371px; /* Fixed width as per layout */
+    height: auto; /* Allow height to adjust based on content */
+    margin-bottom: 30px; /* Space below the paragraph */
+}
+
+@media (max-width: 600px) {
+    .verification-code-prompt {
+        width: 100%; /* Make it responsive on smaller screens */
+        font-size: 13px;
+        line-height: 1.4;
+    }
+}
+
+/* === Custom Message Modal Styles === */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Optional blur effect */
+}
+
+.modal.show-modal {
+    display: flex; /* Show modal when 'show-modal' class is added */
+}
+
+.modal-content {
+    background-color: #0D0D0D;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; /* Responsive width */
+    max-width: 400px; /* Max width for larger screens */
+    border-radius: 15px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.3s ease-out; /* Simple fade-in animation */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    word-wrap: break-word; /* Ensure long messages wrap */
+}
+
+.modal-content .close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close-button:hover,
+.modal-content .close-button:focus {
+    color: #DADAE8;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 90%; /* Adjust width for smaller mobile screens */
+        padding: 20px;
+    }
+    .modal-content p {
+        font-size: 1em;
+    }
+    .modal-content .close-button {
+        font-size: 24px;
+    }
+}
+

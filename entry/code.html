@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Code - Branchez</title>
+    <link rel="stylesheet" href="enterstyle.css">
+    <!-- Google Fonts for Changa, Poppins, and Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Poppins:wght@400;600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background-image-container">
+        <div class="form-container">
+            <h1>Enter verification code</h1>
+            <p class="verification-code-prompt">We have sent a verification code to your email address. Please enter your code down below 👇</p>
+            <form id="codeVerificationForm">
+                <!-- Inline Error Message Display Area -->
+                <div id="codeErrorMessage" class="error-message"></div>
+
+                <div class="code-input-group">
+                    <input type="text" class="code-input" id="code1" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" class="code-input" id="code2" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" class="code-input" id="code3" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" class="code-input" id="code4" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                    <input type="text" class="code-input" id="code5" maxlength="1" inputmode="numeric" pattern="[0-9]">
+                </div>
+
+                <button type="submit" class="signup-button verify-button">
+                    <i class="fas fa-check-circle button-icon"></i>
+                    <span>Verify</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="modalCloseBtn">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script src="enterscript.js"></script>
+</body>
+</html>

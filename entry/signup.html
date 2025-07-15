@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Branchez</title>
+    <link rel="stylesheet" href="enterstyle.css">
+    <!-- Google Fonts for Changa and Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background-image-container">
+        <div class="form-container">
+            <h1>Sign Up</h1>
+            <form id="signupForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="Your E-mail" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="repeatPassword" placeholder="Repeat Password" required>
+                </div>
+                <button type="submit" class="signup-button">Sign Up</button>
+            </form>
+
+            <div class="or-divider">
+                <hr class="divider-line">
+                <span class="or-text">or</span>
+                <hr class="divider-line">
+            </div>
+
+            <div class="social-login-buttons">
+                <button class="social-button google-button">
+                    <i class="fab fa-google social-icon"></i>
+                    <span>Google</span>
+                </button>
+                <button class="social-button facebook-button">
+                    <i class="fab fa-facebook-f social-icon"></i>
+                    <span>Facebook</span>
+                </button>
+            </div>
+
+            <p class="login-prompt">
+                Already have an account? <a href="login.html" class="login-link">login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Custom Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="modalCloseBtn">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script src="enterscript.js"></script>
+</body>
+</html>
