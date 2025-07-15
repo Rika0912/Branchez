@@ -8,17 +8,17 @@ const layoutPageBody = document.querySelector('.layout-page');
 
 // Define video sources for different device types
 const desktopVideos = [
-    'assets/frame 1.mp4', // Desktop Part 1
-    'assets/frame 2.mp4',  // Desktop Part 2
-    'assets/frame 3.mp4', // Desktop Part 3
-    'assets/frame 4.mp4'  // Desktop Part 4
+    'assets//frame 1.mp4', // Desktop Part 1
+    'assets//frame 2.mp4',  // Desktop Part 2
+    'assets//frame 3.mp4', // Desktop Part 3
+    'assets//frame 4.mp4'  // Desktop Part 4
 ];
 
 const mobileTabletVideos = [
-    'assets/cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (PLACEHOLDER - REPLACE WITH YOUR ACTUAL MOBILE VIDEO PATHS)
-    'assets/1-2.mp4', // Mobile/Tablet Part 2
-    'assets/cracking egg 1-3.mp4', // Mobile/Tablet Part 3
-    'assets/cracking egg 1-4.mp4'  // Mobile/Tablet Part 4
+    'assets//cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (PLACEHOLDER - REPLACE WITH YOUR ACTUAL MOBILE VIDEO PATHS)
+    'assets//1-2.mp4', // Mobile/Tablet Part 2
+    'assets//cracking egg 1-3.mp4', // Mobile/Tablet Part 3
+    'assets//cracking egg 1-4.mp4'  // Mobile/Tablet Part 4
 ];
 
 // Create an Audio object for the breaking shell sound
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (mobileLoginIcon) {
             mobileLoginIcon.addEventListener('click', function() {
-                window.location.href = 'C:\\Users\\AL_YOUSSEF\\Desktop\\Hala 2\\Entry\\login.html';
+                window.location.href = 'entry//login.html';
             });
         }
         
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginButton = document.getElementById('loginButton');
         if (loginButton) {
             loginButton.addEventListener('click', function() {
-                window.location.href = 'C:\\Users\\AL_YOUSSEF\\Desktop\\Hala 2\\Entry\\login.html';
+                window.location.href = 'entry//login.html';
             });
         }
         
@@ -136,38 +136,38 @@ document.addEventListener('DOMContentLoaded', function() {
         if (animatedPhoto && section1 && section2) {
             // Generate array of image paths (100.gif to 132.gif)
             const imageFrames = [
-                'assets/Comp 100.gif',
-        'assets/Comp 101.gif',
-        'assets/Comp 102.gif',
-        'assets/Comp 103.gif',
-        'assets/Comp 104.gif',
-        'assets/Comp 105.gif',
-        'assets/Comp 106.gif',
-        'assets/Comp 107.gif',
-        'assets/Comp 108.gif',
-        'assets/Comp 109.gif',
-        'assets/Comp 110.gif',
-        'assets/Comp 111.gif',
-        'assets/Comp 112.gif',
-        'assets/Comp 113.gif',
-        'assets/Comp 114.gif',
-        'assets/Comp 115.gif',
-        'assets/Comp 116.gif',
-        'assets/Comp 117.gif',
-        'assets/Comp 118.gif',
-        'assets/Comp 119.gif',
-        'assets/Comp 120.gif',
-        'assets/Comp 121.gif',
-        'assets/Comp 122.gif',
-        'assets/Comp 123.gif',
-        'assets/Comp 124.gif',
-        'assets/Comp 125.gif',
-        'assets/Comp 126.gif',
-        'assets/Comp 127.gif',
-        'assets/Comp 128.gif',
-        'assets/Comp 129.gif',
-        'assets/Comp 130.gif',
-        'assets/Comp 132.gif',
+                'assets//Comp 100.gif',
+        'assets//Comp 101.gif',
+        'assets//Comp 102.gif',
+        'assets//Comp 103.gif',
+        'assets//Comp 104.gif',
+        'assets//Comp 105.gif',
+        'assets//Comp 106.gif',
+        'assets//Comp 107.gif',
+        'assets//Comp 108.gif',
+        'assets//Comp 109.gif',
+        'assets//Comp 110.gif',
+        'assets//Comp 111.gif',
+        'assets//Comp 112.gif',
+        'assets//Comp 113.gif',
+        'assets//Comp 114.gif',
+        'assets//Comp 115.gif',
+        'assets//Comp 116.gif',
+        'assets//Comp 117.gif',
+        'assets//Comp 118.gif',
+        'assets//Comp 119.gif',
+        'assets//Comp 120.gif',
+        'assets//Comp 121.gif',
+        'assets//Comp 122.gif',
+        'assets//Comp 123.gif',
+        'assets//Comp 124.gif',
+        'assets//Comp 125.gif',
+        'assets//Comp 126.gif',
+        'assets//Comp 127.gif',
+        'assets//Comp 128.gif',
+        'assets//Comp 129.gif',
+        'assets//Comp 130.gif',
+        'assets//Comp 132.gif',
             ];
 
             let currentFrame = 1;
@@ -198,20 +198,20 @@ const servicesAnimatedPhoto = document.getElementById('services-animated-photo')
 const section3 = document.getElementById('section3');
 
 const servicesToTrustedAnimationFrames = [
-    'assets/1.png',
-    'assets/2.png',
-    'assets/3.png',
-    'assets/4.png',
-    'assets/5.png',
-    'assets/6.png',
-    'assets/7.png',
-    'assets/8.png',
-    'assets/9.png',
-    'assets/10.png',
-    'assets/11.png',
-    'assets/12.png',
-    'assets/13.png',
-    'assets/14.png'
+    'assets//1.png',
+    'assets//2.png',
+    'assets//3.png',
+    'assets//4.png',
+    'assets//5.png',
+    'assets//6.png',
+    'assets//7.png',
+    'assets//8.png',
+    'assets//9.png',
+    'assets//10.png',
+    'assets//11.png',
+    'assets//12.png',
+    'assets//13.png',
+    'assets//14.png'
 ];
 
 // Preload all images to ensure consistent sizing
@@ -346,7 +346,7 @@ if (servicesAnimatedPhoto && section2 && section3) {
 
                 // Create a dummy anchor element to trigger download
                 const downloadLink = document.createElement('a');
-                downloadLink.href = 'assets/Brancherz Portfolio June 2025 prv_compressed.pdf'; // Placeholder PDF URL
+                downloadLink.href = 'assets//Brancherz Portfolio June 2025 prv_compressed.pdf'; // Placeholder PDF URL
                 downloadLink.download = 'Branchez_Portfolio.pdf'; // Suggested filename for download
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
