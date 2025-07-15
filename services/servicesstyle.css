@@ -110,6 +110,10 @@ body {
     color: #99CA3C;
 }
 
+.login-button:hover .login-icon {
+    opacity: 0;
+}
+
 .login-button:hover::after {
     content: "→";
     font-size: 18px;
