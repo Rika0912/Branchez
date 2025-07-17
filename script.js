@@ -192,13 +192,49 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+// === Home Page Logic ===
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on the home page
+    if (document.querySelector('.home-page-wrapper')) {
+        // Mobile Navigation Toggle
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const closeMobileNav = document.getElementById('closeMobileNav');
+        const mobileLoginIcon = document.getElementById('mobileLoginIcon');
+
+        if (mobileNavToggle && mobileNavOverlay) {
+            mobileNavToggle.addEventListener('click', function() {
+                mobileNavOverlay.style.width = '100%';
+            });
+        }
+
+        if (closeMobileNav) {
+            closeMobileNav.addEventListener('click', function() {
+                mobileNavOverlay.style.width = '0';
+            });
+        }
+
+        if (mobileLoginIcon) {
+            mobileLoginIcon.addEventListener('click', function() {
+                window.location.href = 'entry//login.html';
+            });
+        }
+
+        // Desktop Login Button
+        const loginButton = document.getElementById('loginButton');
+        if (loginButton) {
+            loginButton.addEventListener('click', function() {
+                window.location.href = 'entry//login.html';
+            });
+        }
+
         // Animated Photo on Scroll
         const animatedPhoto = document.getElementById('animated-photo');
         const section1 = document.getElementById('section1');
-        const section2 = document.getElementById('section2');
+        const section2 = document.getElementById('section2'); // Ensure section2 is correctly identified
 
         if (animatedPhoto && section1 && section2) {
-            // Generate array of image paths (100.gif to 132.gif)
+            // Image paths now directly refer to 'assets//' assuming it's accessible
             const imageFrames = [
                 'assets//Comp 100.gif',
                 'assets//Comp 101.gif',
@@ -234,74 +270,107 @@ document.addEventListener('DOMContentLoaded', function() {
                 'assets//Comp 132.gif',
             ];
 
-            let currentFrameIndex = -1; // Use -1 to ensure first frame loads correctly
+            let currentFrameIndex = -1; // Initialize to -1 to force initial update
 
-            // Define the scroll range for the animation
-            // This is the key to controlling the speed
-            // You'll likely need to experiment with this value.
-            // A good starting point is a multiple of windowHeight.
-            const animationScrollDistance = section1.offsetHeight; // Use section1's full height initially
-            // Or, if section1 is short and you want more scroll, use:
-            // const animationScrollDistance = window.innerHeight * 2; // E.g., two full screen scrolls
+            // Function to preload all images for smoother animation
+            function preloadAllAnimationImages() {
+                const preloadPromises = imageFrames.map(src => {
+                    return new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.src = src;
+                        img.onload = () => resolve();
+                        img.onerror = () => {
+                            console.error(`Failed to preload image: ${src}`);
+                            reject(new Error(`Failed to preload ${src}`));
+                        };
+                    });
+                });
 
-            function updateAnimationFrame() {
-                const scrollPosition = window.scrollY;
-                const section1Top = section1.offsetTop; // Get the top position of section1
-                const section1Bottom = section1Top + section1.offsetHeight;
-                const windowHeight = window.innerHeight;
-
-                // Define the start and end scroll points for the animation
-                // The animation starts when section1 enters the viewport (or slightly before)
-                // and ends when it completely leaves the viewport, or just before section2 starts.
-
-                // Option 1: Animation covers the full scroll height of section1
-                // const animationStartScroll = section1Top;
-                // const animationEndScroll = section1Bottom - windowHeight; // Animation finishes when bottom of section1 hits top of viewport
-
-                // Option 2 (Recommended for a controlled transition):
-                // Animation starts when section1 comes into view, and finishes
-                // at a fixed scroll distance. This provides consistent speed regardless of section1's height.
-                const animationStartScroll = section1Top;
-                // You want the animation to *finish* before section2 is fully visible.
-                // Let's make it finish when the top of section2 reaches the viewport.
-                const section2Top = section2.offsetTop;
-
-                // The total scroll range over which the animation plays
-                // This means the animation will complete over the distance from section1's top to section2's top.
-                const totalAnimationScrollRange = section2Top - animationStartScroll;
-
-                // Calculate a clamped scroll progress within the defined range
-                let scrollProgress = 0;
-                if (scrollPosition > animationStartScroll) {
-                    scrollProgress = (scrollPosition - animationStartScroll) / totalAnimationScrollRange;
-                }
-                scrollProgress = Math.min(Math.max(scrollProgress, 0), 1); // Clamp between 0 and 1
-
-                // Determine which frame to show based on scroll progress
-                // The last frame is imageFrames.length - 1
-                const frameIndex = Math.floor(scrollProgress * (imageFrames.length - 1));
-
-                if (frameIndex !== currentFrameIndex) {
-                    currentFrameIndex = frameIndex;
-                    animatedPhoto.src = imageFrames[currentFrameIndex];
-                }
-            }
-
-            // Preload images to prevent flickering during scroll
-            function preloadImages(imagePaths) {
-                imagePaths.forEach(path => {
-                    const img = new Image();
-                    img.src = path;
+                Promise.allSettled(preloadPromises).then(results => {
+                    results.forEach((result, index) => {
+                        if (result.status === 'rejected') {
+                            console.warn(`Preload failed for ${imageFrames[index]}: ${result.reason}`);
+                        }
+                    });
+                    console.log('All scroll animation images attempted to preload.');
                 });
             }
 
-            preloadImages(imageFrames); // Call preload on page load
+            // Function to update the image frame based on scroll position
+            function updateAnimationFrame() {
+                const scrollPosition = window.scrollY;
+                const section1Top = section1.offsetTop; // Get the top absolute scroll position of section1
+                const section2Top = section2.offsetTop; // Get the top absolute scroll position of section2
+                const windowHeight = window.innerHeight;
 
-            window.addEventListener('scroll', updateAnimationFrame);
-            updateAnimationFrame(); // Initialize the first frame
+                // --- The Key Change for Speed Control ---
+                // Define the total scroll distance over which the animation should complete.
+                // This is the main variable you'll adjust.
+                // Option 1: Based on distance between section1 and section2
+                let desiredAnimationLength = section2Top - section1Top;
+
+                // Option 2: Define a fixed, custom scroll length (e.g., 2 times the window height)
+                // This gives you more control regardless of actual section heights.
+                // You can uncomment and modify this line if `section2Top - section1Top` is too short.
+                // desiredAnimationLength = windowHeight * 3; // Example: user scrolls 3 full screens for animation
+
+                // Ensure a minimum length to prevent division by zero or super fast animation
+                if (desiredAnimationLength <= 0) {
+                     // Fallback to a default if sections are overlapping or incorrectly positioned
+                    desiredAnimationLength = windowHeight * 2; // A safe default length
+                }
+
+                // The animation starts when the top of section1 enters the viewport
+                const animationStartPoint = section1Top;
+                // The animation ends after the 'desiredAnimationLength' has been scrolled past this start point.
+                const animationEndPoint = animationStartPoint + desiredAnimationLength;
+
+
+                // Calculate scroll progress within the defined range (0 to 1)
+                let scrollProgress = 0;
+                if (scrollPosition >= animationStartPoint && scrollPosition <= animationEndPoint) {
+                    scrollProgress = (scrollPosition - animationStartPoint) / desiredAnimationLength;
+                } else if (scrollPosition > animationEndPoint) {
+                    scrollProgress = 1; // Ensure it stays at 1 (last frame) if scrolled past end
+                }
+                // If scrollPosition < animationStartPoint, scrollProgress remains 0 (first frame)
+
+                // Clamp scrollProgress between 0 and 1
+                scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+
+                // Determine which frame to show
+                const frameIndex = Math.floor(scrollProgress * (imageFrames.length - 1));
+                const clampedFrameIndex = Math.max(0, Math.min(imageFrames.length - 1, frameIndex));
+
+                if (clampedFrameIndex !== currentFrameIndex) {
+                    currentFrameIndex = clampedFrameIndex;
+                    animatedPhoto.src = imageFrames[currentFrameIndex];
+                    // console.log(`Setting animatedPhoto.src to: ${imageFrames[currentFrameIndex]} (Frame: ${currentFrameIndex})`); // Debugging
+                }
+            }
+
+            // --- Initialization ---
+
+            // Preload all images for a smoother experience
+            preloadAllAnimationImages();
+
+            // Set the initial image immediately to the first frame
+            animatedPhoto.src = imageFrames[0];
+            currentFrameIndex = 0; // Set initial state of currentFrameIndex
+
+            // Add event listener for scroll and call once initially
+            window.addEventListener('scroll', () => {
+                requestAnimationFrame(updateAnimationFrame);
+            });
+            // Also call updateAnimationFrame on initial load to set the correct frame based on current scroll position
+            updateAnimationFrame();
+
+            // Consider adding a 'resize' listener if section heights can change dynamically
+            window.addEventListener('resize', () => {
+                requestAnimationFrame(updateAnimationFrame); // Recalculate on resize
+            });
         }
-    }
-});
+
 // --- Scroll-based Photo Animation (Div-2: Services to Div-3) ---
 const servicesAnimatedPhoto = document.getElementById('services-animated-photo');
 const section3 = document.getElementById('section3');
