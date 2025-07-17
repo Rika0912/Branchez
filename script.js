@@ -1,7 +1,7 @@
 // script.js
 
 // === Layout Page Logic ===
-let currentVideoIndex = 1; // Start at 0 for array indexing
+let currentVideoIndex = 0; // Start at 0 for array indexing
 const layoutAnimationVideo = document.getElementById('layout-animation-video');
 const layoutVideoSource = document.getElementById('layout-video-source');
 const layoutPageBody = document.querySelector('.layout-page');
@@ -27,7 +27,12 @@ shellBreakSound.volume = 0.7;
 
 if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     let activeVideos;
-    let nextVideoElement = null; // To pre-load the next video
+    // We'll manage a hidden video element for preloading
+    let preloadedVideoElement = document.createElement('video');
+    preloadedVideoElement.style.display = 'none';
+    preloadedVideoElement.muted = true; // Always mute preloaded videos
+    preloadedVideoElement.preload = 'auto'; // Crucial for preloading
+    document.body.appendChild(preloadedVideoElement);
 
     // Determine which set of videos to use based on screen width
     const isMobileOrTablet = window.matchMedia("(max-width: 768px)").matches;
@@ -39,103 +44,95 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
         console.log("Loading desktop videos.");
     }
 
-    // Function to load and play a specific video
-    function loadAndPlayVideo(videoIndex) {
-        if (videoIndex >= activeVideos.length) {
+    // Function to preload a specific video by index
+    function preloadVideo(index) {
+        if (index < activeVideos.length) {
+            const videoPath = activeVideos[index];
+            preloadedVideoElement.src = videoPath;
+            preloadedVideoElement.load();
+            console.log(`Preloading video: ${videoPath}`);
+        }
+    }
+
+    // Function to handle playing the current video and preparing the next
+    function playCurrentAndPreloadNext() {
+        if (currentVideoIndex >= activeVideos.length) {
             console.log("All videos played. Redirecting to home.html");
             window.location.href = 'home.html';
             return;
         }
 
-        const videoPath = activeVideos[videoIndex];
-        console.log(`Loading video: ${videoPath}`);
+        const currentVideoPath = activeVideos[currentVideoIndex];
+        console.log(`Now playing video: ${currentVideoPath}`);
 
-        // Set the source and load
-        layoutVideoSource.src = videoPath;
-        layoutAnimationVideo.load();
-
-        // Play the video once it's ready
-        layoutAnimationVideo.oncanplaythrough = () => {
-            layoutAnimationVideo.play().catch(e => console.error(`Error playing video ${videoPath}:`, e));
-            // Pre-load the next video if available
-            if (videoIndex + 1 < activeVideos.length) {
-                preloadNextVideo(videoIndex + 1);
-            }
-        };
-
-        layoutAnimationVideo.onerror = (e) => {
-            console.error('Video playback error for:', videoPath, e);
-        };
-    }
-
-    // Function to preload the next video
-    function preloadNextVideo(indexToPreload) {
-        if (indexToPreload < activeVideos.length) {
-            console.log(`Preloading video: ${activeVideos[indexToPreload]}`);
-            if (!nextVideoElement) {
-                nextVideoElement = document.createElement('video');
-                nextVideoElement.style.display = 'none'; // Keep it hidden
-                nextVideoElement.muted = true; // Mute preloaded video
-                nextVideoElement.preload = 'auto'; // Important for preloading
-                document.body.appendChild(nextVideoElement); // Add to DOM but hidden
-            }
-            nextVideoElement.src = activeVideos[indexToPreload];
-            nextVideoElement.load();
+        // Set the main video player's source to the preloaded source if available
+        // This makes the transition instant
+        if (preloadedVideoElement.src === currentVideoPath) {
+            layoutVideoSource.src = currentVideoPath; // Already loaded from preloaded element
+            layoutAnimationVideo.load(); // Load instantly
+            layoutAnimationVideo.play().catch(e => console.error(`Error playing video ${currentVideoPath}:`, e));
+        } else {
+            // Fallback: if somehow not preloaded, load and play directly
+            layoutVideoSource.src = currentVideoPath;
+            layoutAnimationVideo.load();
+            layoutAnimationVideo.play().catch(e => console.error(`Error playing video ${currentVideoPath}:`, e));
         }
+
+        // Set up the onended event for the current video
+        layoutAnimationVideo.onended = () => {
+            currentVideoIndex++; // Move to the next video
+            playCurrentAndPreloadNext(); // Automatically play the next video in sequence
+        };
+
+        // Preload the *next* video immediately after starting the current one
+        preloadVideo(currentVideoIndex + 1);
     }
 
-    // Handle interaction to start the first video and subsequent transitions
-    function handleLayoutPageInteraction(event) {
-        event.preventDefault();
+    // Event listener for the initial click/tap
+    layoutPageBody.addEventListener('click', handleLayoutPageInteraction);
+    layoutPageBody.addEventListener('touchend', handleLayoutPageInteraction);
 
-        // Only play sound if it's not the first video and a new video is starting
-        if (currentVideoIndex > 0 && currentVideoIndex < activeVideos.length) {
+    let hasInteracted = false; // Flag to ensure initial setup runs once
+
+    function handleLayoutPageInteraction(event) {
+        event.preventDefault(); // Prevent default behavior (e.g., double-tap zoom)
+
+        if (!hasInteracted) {
+            hasInteracted = true;
+            // Unmute the main video after user interaction
+            layoutAnimationVideo.muted = false;
+
+            // Start playing the first video
+            playCurrentAndPreloadNext();
+
+            // Optionally remove listeners after first interaction if you only want auto-play after that
+            // layoutPageBody.removeEventListener('click', handleLayoutPageInteraction);
+            // layoutPageBody.removeEventListener('touchend', handleLayoutPageInteraction);
+            return; // Exit after initial setup
+        }
+
+        // For subsequent clicks, we want to play the sound and skip to the next video
+        // This part needs careful thought: do you want to click to advance, or for it to auto-advance?
+        // The current 'onended' logic will auto-advance. If you want click-to-advance,
+        // you'd remove the `layoutAnimationVideo.onended` handler and instead
+        // put `currentVideoIndex++; playCurrentAndPreloadNext();` here.
+        // Given your previous request "after I click on the page",
+        // I will keep the click as the *initial trigger* and then *auto-advance*.
+        // If you want to click for each video, let me know.
+
+        // Play sound for interaction (only if not the very first interaction)
+        if (shellBreakSound.paused) { // Only play if not already playing from a rapid click
             shellBreakSound.currentTime = 0; // Rewind sound to start
             shellBreakSound.play().catch(e => console.error("Error playing sound:", e));
         }
-
-        // If the current video has ended, or it's the very first interaction
-        // and we haven't started playing yet
-        if (layoutAnimationVideo.ended || layoutAnimationVideo.paused) {
-            // If there's a preloaded video, swap it in instantly
-            if (nextVideoElement && nextVideoElement.src === activeVideos[currentVideoIndex]) {
-                layoutAnimationVideo.src = nextVideoElement.src;
-                layoutAnimationVideo.load(); // Load immediately from preloaded source
-                layoutAnimationVideo.play().catch(e => console.error("Error playing preloaded video:", e));
-                console.log(`Swapped to preloaded video ${currentVideoIndex + 1}`);
-
-                // Remove the preloaded element, it will be recreated for the next one
-                document.body.removeChild(nextVideoElement);
-                nextVideoElement = null;
-
-                // Pre-load the *next* next video
-                if (currentVideoIndex + 1 < activeVideos.length) {
-                    preloadNextVideo(currentVideoIndex + 1);
-                }
-            } else {
-                // Otherwise, load and play the next video normally (this should ideally not happen
-                // if preloading works correctly for subsequent videos after the first)
-                loadAndPlayVideo(currentVideoIndex);
-            }
-        }
-
-        // Increment index for the next interaction
-        currentVideoIndex++;
-
-        // Set up redirection for the very last video
-        if (currentVideoIndex === activeVideos.length) { // This means the video at currentVideoIndex-1 is the last one
-            layoutAnimationVideo.onended = () => {
-                console.log("Last video ended. Redirecting to home.html");
-                window.location.href = 'home.html';
-            };
-        }
     }
 
-    // Initial setup: Show the video element but keep it paused until interaction
+    // Initial setup: display the video element
     layoutAnimationVideo.style.display = 'block';
-    layoutAnimationVideo.muted = true; // Start muted due to autoplay policies
-    layoutVideoSource.src = activeVideos[currentVideoIndex];
-    layoutAnimationVideo.load();
+    layoutAnimationVideo.muted = true; // Start muted, will be unmuted on first click
+
+    // Preload the very first video, so it's ready for the initial click
+    preloadVideo(currentVideoIndex);
 
     // Debugging listeners (optional, keep for development)
     layoutAnimationVideo.addEventListener('error', (e) => {
@@ -147,14 +144,6 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     layoutAnimationVideo.addEventListener('canplay', () => {
         console.log(`Video can play: ${layoutVideoSource.src}`);
     });
-
-    // Event listeners for clicks/taps to advance videos
-    layoutPageBody.addEventListener('click', handleLayoutPageInteraction);
-    layoutPageBody.addEventListener('touchend', handleLayoutPageInteraction);
-
-    // Initial preloading of the *first* video to be ready for the first click
-    preloadNextVideo(currentVideoIndex); // This actually preloads the first video
-
 }
 
 // === Home Page Logic ===
