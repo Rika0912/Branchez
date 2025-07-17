@@ -9,7 +9,7 @@ const layoutPageBody = document.querySelector('.layout-page');
 // Define video sources for different device types
 const desktopVideos = [
     'assets//frame 1.mp4', // Desktop Part 1
-    'assets//frame 2.mp4',  // Desktop Part 2
+    'assets//frame 2.mp4', // Desktop Part 2
     'assets//frame 3.mp4', // Desktop Part 3
     'assets//frame 4.mp4'  // Desktop Part 4
 ];
@@ -27,6 +27,7 @@ shellBreakSound.volume = 0.7;
 
 if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     let activeVideos;
+    let nextVideoElement = null; // To pre-load the next video
 
     // Determine which set of videos to use based on screen width
     const isMobileOrTablet = window.matchMedia("(max-width: 768px)").matches;
@@ -38,13 +39,105 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
         console.log("Loading desktop videos.");
     }
 
-    // Set initial video when the page loads
+    // Function to load and play a specific video
+    function loadAndPlayVideo(videoIndex) {
+        if (videoIndex >= activeVideos.length) {
+            console.log("All videos played. Redirecting to home.html");
+            window.location.href = 'home.html';
+            return;
+        }
+
+        const videoPath = activeVideos[videoIndex];
+        console.log(`Loading video: ${videoPath}`);
+
+        // Set the source and load
+        layoutVideoSource.src = videoPath;
+        layoutAnimationVideo.load();
+
+        // Play the video once it's ready
+        layoutAnimationVideo.oncanplaythrough = () => {
+            layoutAnimationVideo.play().catch(e => console.error(`Error playing video ${videoPath}:`, e));
+            // Pre-load the next video if available
+            if (videoIndex + 1 < activeVideos.length) {
+                preloadNextVideo(videoIndex + 1);
+            }
+        };
+
+        layoutAnimationVideo.onerror = (e) => {
+            console.error('Video playback error for:', videoPath, e);
+        };
+    }
+
+    // Function to preload the next video
+    function preloadNextVideo(indexToPreload) {
+        if (indexToPreload < activeVideos.length) {
+            console.log(`Preloading video: ${activeVideos[indexToPreload]}`);
+            if (!nextVideoElement) {
+                nextVideoElement = document.createElement('video');
+                nextVideoElement.style.display = 'none'; // Keep it hidden
+                nextVideoElement.muted = true; // Mute preloaded video
+                nextVideoElement.preload = 'auto'; // Important for preloading
+                document.body.appendChild(nextVideoElement); // Add to DOM but hidden
+            }
+            nextVideoElement.src = activeVideos[indexToPreload];
+            nextVideoElement.load();
+        }
+    }
+
+    // Handle interaction to start the first video and subsequent transitions
+    function handleLayoutPageInteraction(event) {
+        event.preventDefault();
+
+        // Only play sound if it's not the first video and a new video is starting
+        if (currentVideoIndex > 0 && currentVideoIndex < activeVideos.length) {
+            shellBreakSound.currentTime = 0; // Rewind sound to start
+            shellBreakSound.play().catch(e => console.error("Error playing sound:", e));
+        }
+
+        // If the current video has ended, or it's the very first interaction
+        // and we haven't started playing yet
+        if (layoutAnimationVideo.ended || layoutAnimationVideo.paused) {
+            // If there's a preloaded video, swap it in instantly
+            if (nextVideoElement && nextVideoElement.src === activeVideos[currentVideoIndex]) {
+                layoutAnimationVideo.src = nextVideoElement.src;
+                layoutAnimationVideo.load(); // Load immediately from preloaded source
+                layoutAnimationVideo.play().catch(e => console.error("Error playing preloaded video:", e));
+                console.log(`Swapped to preloaded video ${currentVideoIndex + 1}`);
+
+                // Remove the preloaded element, it will be recreated for the next one
+                document.body.removeChild(nextVideoElement);
+                nextVideoElement = null;
+
+                // Pre-load the *next* next video
+                if (currentVideoIndex + 1 < activeVideos.length) {
+                    preloadNextVideo(currentVideoIndex + 1);
+                }
+            } else {
+                // Otherwise, load and play the next video normally (this should ideally not happen
+                // if preloading works correctly for subsequent videos after the first)
+                loadAndPlayVideo(currentVideoIndex);
+            }
+        }
+
+        // Increment index for the next interaction
+        currentVideoIndex++;
+
+        // Set up redirection for the very last video
+        if (currentVideoIndex === activeVideos.length) { // This means the video at currentVideoIndex-1 is the last one
+            layoutAnimationVideo.onended = () => {
+                console.log("Last video ended. Redirecting to home.html");
+                window.location.href = 'home.html';
+            };
+        }
+    }
+
+    // Initial setup: Show the video element but keep it paused until interaction
+    layoutAnimationVideo.style.display = 'block';
+    layoutAnimationVideo.muted = true; // Start muted due to autoplay policies
     layoutVideoSource.src = activeVideos[currentVideoIndex];
     layoutAnimationVideo.load();
-    layoutAnimationVideo.style.display = 'block'; // Make video visible
-    layoutAnimationVideo.play().catch(e => console.error("Error playing initial video:", e));
 
-    // Debugging listeners
+    // Debugging listeners (optional, keep for development)
     layoutAnimationVideo.addEventListener('error', (e) => {
         console.error('Video playback error:', layoutVideoSource.src, e);
     });
@@ -57,39 +150,11 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
 
     // Event listeners for clicks/taps to advance videos
     layoutPageBody.addEventListener('click', handleLayoutPageInteraction);
-    // Using 'touchend' for better mobile compatibility for taps
     layoutPageBody.addEventListener('touchend', handleLayoutPageInteraction);
 
-    function handleLayoutPageInteraction(event) {
-        // Prevent default behavior to avoid issues like double-tap zoom on mobile
-        event.preventDefault(); 
+    // Initial preloading of the *first* video to be ready for the first click
+    preloadNextVideo(currentVideoIndex); // This actually preloads the first video
 
-        currentVideoIndex++; // Move to the next video
-
-        if (currentVideoIndex < activeVideos.length) {
-            // Play sound for interaction
-            shellBreakSound.currentTime = 0; // Rewind sound to start
-            shellBreakSound.play().catch(e => console.error("Error playing sound:", e));
-
-            // Load and play the next video
-            const nextVideoSrc = activeVideos[currentVideoIndex];
-            layoutVideoSource.src = nextVideoSrc;
-            layoutAnimationVideo.load();
-            layoutAnimationVideo.play().catch(e => console.error("Error playing video:", nextVideoSrc, e));
-
-            // If this is the last video, set up redirection on its end
-            if (currentVideoIndex === activeVideos.length - 1) {
-                layoutAnimationVideo.onended = () => {
-                    console.log("Last video ended. Redirecting to home.html");
-                    window.location.href = 'home.html';
-                };
-            }
-        } else {
-            // If all videos have been played or clicked past, redirect immediately
-            console.log("All videos played or clicked past. Redirecting to home.html");
-            window.location.href = 'home.html';
-        }
-    }
 }
 
 // === Home Page Logic ===
