@@ -1,7 +1,7 @@
 // script.js
 
 // === Layout Page Logic ===
-let currentVideoIndex = 0; // Start at 0 for array indexing
+let currentVideoIndex = 1; // Start at 0 for array indexing
 const layoutAnimationVideo = document.getElementById('layout-animation-video');
 const layoutVideoSource = document.getElementById('layout-video-source');
 const layoutPageBody = document.querySelector('.layout-page');
