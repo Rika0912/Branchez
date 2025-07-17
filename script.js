@@ -8,17 +8,17 @@ const layoutPageBody = document.querySelector('.layout-page');
 
 // Define video sources for different device types
 const desktopVideos = [
-    'assets//frame 1.mp4', // Desktop Part 1
-    'assets//frame 2.mp4',  // Desktop Part 2
-    'assets//frame 3.mp4', // Desktop Part 3
-    'assets//frame 4.mp4'  // Desktop Part 4
+    'frame 1.mp4', // Desktop Part 1 (corrected slash)
+    'frame 2.mp4', // Desktop Part 2 (corrected slash)
+    'frame 3.mp4', // Desktop Part 3 (corrected slash)
+    'frame 4.mp4'  // Desktop Part 4 (corrected slash)
 ];
 
 const mobileTabletVideos = [
-    'assets//cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (PLACEHOLDER - REPLACE WITH YOUR ACTUAL MOBILE VIDEO PATHS)
-    'assets//1-2.mp4', // Mobile/Tablet Part 2
-    'assets//cracking egg 1-3.mp4', // Mobile/Tablet Part 3
-    'assets//cracking egg 1-4.mp4'  // Mobile/Tablet Part 4
+    'cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (corrected slash)
+    '1-2.mp4',             // Mobile/Tablet Part 2 (corrected slash)
+    'cracking egg 1-3.mp4', // Mobile/Tablet Part 3 (corrected slash)
+    'cracking egg 1-4.mp4'  // Mobile/Tablet Part 4 (corrected slash)
 ];
 
 // Create an Audio object for the breaking shell sound
@@ -27,6 +27,12 @@ shellBreakSound.volume = 0.7;
 
 if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     let activeVideos;
+    // We'll manage a hidden video element for preloading
+    let preloadedVideoElement = document.createElement('video');
+    preloadedVideoElement.style.display = 'none';
+    preloadedVideoElement.muted = true; // Always mute preloaded videos
+    preloadedVideoElement.preload = 'auto'; // Crucial for preloading
+    document.body.appendChild(preloadedVideoElement);
 
     // Determine which set of videos to use based on screen width
     const isMobileOrTablet = window.matchMedia("(max-width: 768px)").matches;
@@ -38,13 +44,107 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
         console.log("Loading desktop videos.");
     }
 
-    // Set initial video when the page loads
+    // --- Core Functions ---
+
+    // Function to preload a specific video by index
+    function preloadVideo(index) {
+        if (index < activeVideos.length) {
+            const videoPath = activeVideos[index];
+            preloadedVideoElement.src = videoPath;
+            preloadedVideoElement.load();
+            console.log(`Preloading video: ${videoPath}`);
+        }
+    }
+
+    // Function to play the video at the currentVideoIndex
+    function playCurrentVideo() {
+        if (currentVideoIndex >= activeVideos.length) {
+            console.log("All videos played. Redirecting to home.html");
+            window.location.href = 'home.html';
+            return;
+        }
+
+        const videoPathToPlay = activeVideos[currentVideoIndex];
+        console.log(`Now attempting to play video: ${videoPathToPlay}`);
+
+        // If the preloaded video element holds the one we want to play, use it for instant swap
+        // Also ensure the main video is unmuted if it's not already
+        layoutAnimationVideo.muted = false; // Ensure it's unmuted before playing
+
+        if (preloadedVideoElement.src.endsWith(videoPathToPlay)) {
+            layoutVideoSource.src = videoPathToPlay; // Set the main player's source
+            layoutAnimationVideo.load(); // Load instantly from the cached data
+            layoutAnimationVideo.play().catch(e => console.error(`Error playing preloaded video ${videoPathToPlay}:`, e));
+            console.log(`Swapped to preloaded video ${currentVideoIndex + 1}`);
+
+            // Clear the preloaded element after using its source
+            preloadedVideoElement.src = '';
+            preloadedVideoElement.load();
+        } else {
+            // Fallback: If for some reason the desired video wasn't preloaded, load and play it directly
+            console.warn(`Video ${videoPathToPlay} was not preloaded. Loading directly.`);
+            layoutVideoSource.src = videoPathToPlay;
+            layoutAnimationVideo.load();
+            layoutAnimationVideo.play().catch(e => console.error(`Error playing video ${videoPathToPlay}:`, e));
+        }
+
+        // Set up the onended event for the currently playing video
+        // This will only redirect AFTER the last video finishes, if no more clicks occur.
+        // It's a fallback for the very last video.
+        if (currentVideoIndex === activeVideos.length - 1) {
+            layoutAnimationVideo.onended = () => {
+                console.log("Last video ended. Redirecting to home.html");
+                window.location.href = 'home.html';
+            };
+        } else {
+            // For all other videos, clear the onended handler so it doesn't auto-advance
+            // We want clicks to advance here.
+            layoutAnimationVideo.onended = null;
+        }
+
+        // Immediately start preloading the *next* video in sequence
+        preloadVideo(currentVideoIndex + 1);
+    }
+
+    // --- Event Handler for Clicks ---
+    function handleLayoutPageInteraction(event) {
+        event.preventDefault(); // Prevent default browser behavior
+
+        // Play sound on every click (except potentially the very first one if it's purely for unmuting)
+        shellBreakSound.currentTime = 0; // Rewind sound to start
+        shellBreakSound.play().catch(e => console.error("Error playing sound:", e));
+
+        // Increment index and play the next video
+        currentVideoIndex++;
+        playCurrentVideo();
+    }
+
+    // --- Initial Setup on Page Load ---
+
+    // 1. Display the video element
+    layoutAnimationVideo.style.display = 'block';
+
+    // 2. Set the source of the first video
     layoutVideoSource.src = activeVideos[currentVideoIndex];
     layoutAnimationVideo.load();
-    layoutAnimationVideo.style.display = 'block'; // Make video visible
-    layoutAnimationVideo.play().catch(e => console.error("Error playing initial video:", e));
 
-    // Debugging listeners
+    // 3. Attempt to play the first video immediately (it will be muted initially due to policies)
+    layoutAnimationVideo.muted = true; // Start muted to allow autoplay
+    layoutAnimationVideo.play().then(() => {
+        console.log("Initial video started (muted).");
+    }).catch(e => {
+        console.warn("Autoplay of initial video (muted) failed:", e);
+        // If even muted autoplay fails, you might show a "Click to Start" overlay.
+    });
+
+    // 4. Preload the *second* video so it's ready for the first user click
+    preloadVideo(currentVideoIndex + 1);
+
+    // 5. Attach event listeners for clicks/taps
+    layoutPageBody.addEventListener('click', handleLayoutPageInteraction);
+    layoutPageBody.addEventListener('touchend', handleLayoutPageInteraction);
+
+    // --- Debugging Listeners (Optional) ---
     layoutAnimationVideo.addEventListener('error', (e) => {
         console.error('Video playback error:', layoutVideoSource.src, e);
     });
@@ -54,45 +154,9 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     layoutAnimationVideo.addEventListener('canplay', () => {
         console.log(`Video can play: ${layoutVideoSource.src}`);
     });
-
-    // Event listeners for clicks/taps to advance videos
-    layoutPageBody.addEventListener('click', handleLayoutPageInteraction);
-    // Using 'touchend' for better mobile compatibility for taps
-    layoutPageBody.addEventListener('touchend', handleLayoutPageInteraction);
-
-    function handleLayoutPageInteraction(event) {
-        // Prevent default behavior to avoid issues like double-tap zoom on mobile
-        event.preventDefault(); 
-
-        currentVideoIndex++; // Move to the next video
-
-        if (currentVideoIndex < activeVideos.length) {
-            // Play sound for interaction
-            shellBreakSound.currentTime = 0; // Rewind sound to start
-            shellBreakSound.play().catch(e => console.error("Error playing sound:", e));
-
-            // Load and play the next video
-            const nextVideoSrc = activeVideos[currentVideoIndex];
-            layoutVideoSource.src = nextVideoSrc;
-            layoutAnimationVideo.load();
-            layoutAnimationVideo.play().catch(e => console.error("Error playing video:", nextVideoSrc, e));
-
-            // If this is the last video, set up redirection on its end
-            if (currentVideoIndex === activeVideos.length - 1) {
-                layoutAnimationVideo.onended = () => {
-                    console.log("Last video ended. Redirecting to home.html");
-                    window.location.href = 'home.html';
-                };
-            }
-        } else {
-            // If all videos have been played or clicked past, redirect immediately
-            console.log("All videos played or clicked past. Redirecting to home.html");
-            window.location.href = 'home.html';
-        }
-    }
 }
 
---- // Home Page Logic 
+// === Home Page Logic ===
 
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the home page
