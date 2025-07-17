@@ -8,17 +8,17 @@ const layoutPageBody = document.querySelector('.layout-page');
 
 // Define video sources for different device types
 const desktopVideos = [
-    'frame 1.mp4', // Desktop Part 1 (corrected slash)
-    'frame 2.mp4', // Desktop Part 2 (corrected slash)
-    'frame 3.mp4', // Desktop Part 3 (corrected slash)
-    'frame 4.mp4'  // Desktop Part 4 (corrected slash)
+    'assets//frame 1.mp4', // Desktop Part 1 (corrected slash)
+    'assets//frame 2.mp4', // Desktop Part 2 (corrected slash)
+    'assets//frame 3.mp4', // Desktop Part 3 (corrected slash)
+    'assets//frame 4.mp4'  // Desktop Part 4 (corrected slash)
 ];
 
 const mobileTabletVideos = [
-    'cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (corrected slash)
-    '1-2.mp4',             // Mobile/Tablet Part 2 (corrected slash)
-    'cracking egg 1-3.mp4', // Mobile/Tablet Part 3 (corrected slash)
-    'cracking egg 1-4.mp4'  // Mobile/Tablet Part 4 (corrected slash)
+    'assets//cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (corrected slash)
+    'assets//1-2.mp4',             // Mobile/Tablet Part 2 (corrected slash)
+    'assets//cracking egg 1-3.mp4', // Mobile/Tablet Part 3 (corrected slash)
+    'assets//cracking egg 1-4.mp4'  // Mobile/Tablet Part 4 (corrected slash)
 ];
 
 // Create an Audio object for the breaking shell sound
