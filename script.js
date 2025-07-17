@@ -8,17 +8,17 @@ const layoutPageBody = document.querySelector('.layout-page');
 
 // Define video sources for different device types
 const desktopVideos = [
-    'assets//frame 1.mp4', // Desktop Part 1
-    'assets//frame 2.mp4', // Desktop Part 2
-    'assets//frame 3.mp4', // Desktop Part 3
-    'assets//frame 4.mp4'  // Desktop Part 4
+    'assets/frame 1.mp4', // Desktop Part 1 (corrected slash)
+    'assets/frame 2.mp4', // Desktop Part 2 (corrected slash)
+    'assets/frame 3.mp4', // Desktop Part 3 (corrected slash)
+    'assets/frame 4.mp4'  // Desktop Part 4 (corrected slash)
 ];
 
 const mobileTabletVideos = [
-    'assets//cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (PLACEHOLDER - REPLACE WITH YOUR ACTUAL MOBILE VIDEO PATHS)
-    'assets//1-2.mp4', // Mobile/Tablet Part 2
-    'assets//cracking egg 1-3.mp4', // Mobile/Tablet Part 3
-    'assets//cracking egg 1-4.mp4'  // Mobile/Tablet Part 4
+    'assets/cracking egg 1-1.mp4', // Mobile/Tablet Part 1 (corrected slash)
+    'assets/1-2.mp4',             // Mobile/Tablet Part 2 (corrected slash)
+    'assets/cracking egg 1-3.mp4', // Mobile/Tablet Part 3 (corrected slash)
+    'assets/cracking egg 1-4.mp4'  // Mobile/Tablet Part 4 (corrected slash)
 ];
 
 // Create an Audio object for the breaking shell sound
@@ -156,7 +156,8 @@ if (layoutPageBody && layoutAnimationVideo && layoutVideoSource) {
     });
 }
 
-// === Home Page Logic ===
+--- // Home Page Logic 
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the home page
     if (document.querySelector('.home-page-wrapper')) {
@@ -180,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (mobileLoginIcon) {
             mobileLoginIcon.addEventListener('click', function() {
-                window.location.href = 'entry//login.html';
+                window.location.href = 'entry/login.html'; // Corrected slash for consistency
             });
         }
 
@@ -188,43 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginButton = document.getElementById('loginButton');
         if (loginButton) {
             loginButton.addEventListener('click', function() {
-                window.location.href = 'entry//login.html';
-            });
-        }
-
-// === Home Page Logic ===
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're on the home page
-    if (document.querySelector('.home-page-wrapper')) {
-        // Mobile Navigation Toggle
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
-        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-        const closeMobileNav = document.getElementById('closeMobileNav');
-        const mobileLoginIcon = document.getElementById('mobileLoginIcon');
-
-        if (mobileNavToggle && mobileNavOverlay) {
-            mobileNavToggle.addEventListener('click', function() {
-                mobileNavOverlay.style.width = '100%';
-            });
-        }
-
-        if (closeMobileNav) {
-            closeMobileNav.addEventListener('click', function() {
-                mobileNavOverlay.style.width = '0';
-            });
-        }
-
-        if (mobileLoginIcon) {
-            mobileLoginIcon.addEventListener('click', function() {
-                window.location.href = 'entry//login.html';
-            });
-        }
-
-        // Desktop Login Button
-        const loginButton = document.getElementById('loginButton');
-        if (loginButton) {
-            loginButton.addEventListener('click', function() {
-                window.location.href = 'entry//login.html';
+                window.location.href = 'entry/login.html'; // Corrected slash for consistency
             });
         }
 
@@ -234,40 +199,39 @@ document.addEventListener('DOMContentLoaded', function() {
         const section2 = document.getElementById('section2'); // Ensure section2 is correctly identified
 
         if (animatedPhoto && section1 && section2) {
-            // Image paths now directly refer to 'assets//' assuming it's accessible
             const imageFrames = [
-                'assets//Comp 100.gif',
-                'assets//Comp 101.gif',
-                'assets//Comp 102.gif',
-                'assets//Comp 103.gif',
-                'assets//Comp 104.gif',
-                'assets//Comp 105.gif',
-                'assets//Comp 106.gif',
-                'assets//Comp 107.gif',
-                'assets//Comp 108.gif',
-                'assets//Comp 109.gif',
-                'assets//Comp 110.gif',
-                'assets//Comp 111.gif',
-                'assets//Comp 112.gif',
-                'assets//Comp 113.gif',
-                'assets//Comp 114.gif',
-                'assets//Comp 115.gif',
-                'assets//Comp 116.gif',
-                'assets//Comp 117.gif',
-                'assets//Comp 118.gif',
-                'assets//Comp 119.gif',
-                'assets//Comp 120.gif',
-                'assets//Comp 121.gif',
-                'assets//Comp 122.gif',
-                'assets//Comp 123.gif',
-                'assets//Comp 124.gif',
-                'assets//Comp 125.gif',
-                'assets//Comp 126.gif',
-                'assets//Comp 127.gif',
-                'assets//Comp 128.gif',
-                'assets//Comp 129.gif',
-                'assets//Comp 130.gif',
-                'assets//Comp 132.gif',
+                'assets/Comp 100.gif', // Corrected slash
+                'assets/Comp 101.gif', // Corrected slash
+                'assets/Comp 102.gif', // Corrected slash
+                'assets/Comp 103.gif', // Corrected slash
+                'assets/Comp 104.gif', // Corrected slash
+                'assets/Comp 105.gif', // Corrected slash
+                'assets/Comp 106.gif', // Corrected slash
+                'assets/Comp 107.gif', // Corrected slash
+                'assets/Comp 108.gif', // Corrected slash
+                'assets/Comp 109.gif', // Corrected slash
+                'assets/Comp 110.gif', // Corrected slash
+                'assets/Comp 111.gif', // Corrected slash
+                'assets/Comp 112.gif', // Corrected slash
+                'assets/Comp 113.gif', // Corrected slash
+                'assets/Comp 114.gif', // Corrected slash
+                'assets/Comp 115.gif', // Corrected slash
+                'assets/Comp 116.gif', // Corrected slash
+                'assets/Comp 117.gif', // Corrected slash
+                'assets/Comp 118.gif', // Corrected slash
+                'assets/Comp 119.gif', // Corrected slash
+                'assets/Comp 120.gif', // Corrected slash
+                'assets/Comp 121.gif', // Corrected slash
+                'assets/Comp 122.gif', // Corrected slash
+                'assets/Comp 123.gif', // Corrected slash
+                'assets/Comp 124.gif', // Corrected slash
+                'assets/Comp 125.gif', // Corrected slash
+                'assets/Comp 126.gif', // Corrected slash
+                'assets/Comp 127.gif', // Corrected slash
+                'assets/Comp 128.gif', // Corrected slash
+                'assets/Comp 129.gif', // Corrected slash
+                'assets/Comp 130.gif', // Corrected slash
+                'assets/Comp 132.gif', // Corrected slash
             ];
 
             let currentFrameIndex = -1; // Initialize to -1 to force initial update
@@ -316,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Ensure a minimum length to prevent division by zero or super fast animation
                 if (desiredAnimationLength <= 0) {
-                     // Fallback to a default if sections are overlapping or incorrectly positioned
+                    // Fallback to a default if sections are overlapping or incorrectly positioned
                     desiredAnimationLength = windowHeight * 2; // A safe default length
                 }
 
