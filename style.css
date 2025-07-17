@@ -99,8 +99,12 @@ body {
 }
 
 .header-logo img {
-    max-width: 150px;
-    height: auto;
+width: 250px;
+height: 80px;
+opacity: 1;
+top: 17px;
+left: 65px;
+
 }
 
 /* Navigation Styles */
@@ -112,7 +116,7 @@ body {
 }
 
 .navbar .nav-item {
-    color: #FFFFFF;
+    color: #7D7B7B;
     text-decoration: none;
     font-size: 1.1em;
     font-weight: 600;
@@ -122,6 +126,7 @@ body {
 
 .navbar .nav-item.active {
     text-decoration: underline;
+    color: #FFFFFF;
 }
 
 .navbar .nav-item:hover:not(.active) {
