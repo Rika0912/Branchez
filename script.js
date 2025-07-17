@@ -165,25 +165,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileNavOverlay = document.getElementById('mobileNavOverlay');
         const closeMobileNav = document.getElementById('closeMobileNav');
         const mobileLoginIcon = document.getElementById('mobileLoginIcon');
-        
+
         if (mobileNavToggle && mobileNavOverlay) {
             mobileNavToggle.addEventListener('click', function() {
                 mobileNavOverlay.style.width = '100%';
             });
         }
-        
+
         if (closeMobileNav) {
             closeMobileNav.addEventListener('click', function() {
                 mobileNavOverlay.style.width = '0';
             });
         }
-        
+
         if (mobileLoginIcon) {
             mobileLoginIcon.addEventListener('click', function() {
                 window.location.href = 'entry//login.html';
             });
         }
-        
+
         // Desktop Login Button
         const loginButton = document.getElementById('loginButton');
         if (loginButton) {
@@ -191,72 +191,117 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'entry//login.html';
             });
         }
-        
+
         // Animated Photo on Scroll
         const animatedPhoto = document.getElementById('animated-photo');
         const section1 = document.getElementById('section1');
         const section2 = document.getElementById('section2');
-        
+
         if (animatedPhoto && section1 && section2) {
             // Generate array of image paths (100.gif to 132.gif)
             const imageFrames = [
                 'assets//Comp 100.gif',
-        'assets//Comp 101.gif',
-        'assets//Comp 102.gif',
-        'assets//Comp 103.gif',
-        'assets//Comp 104.gif',
-        'assets//Comp 105.gif',
-        'assets//Comp 106.gif',
-        'assets//Comp 107.gif',
-        'assets//Comp 108.gif',
-        'assets//Comp 109.gif',
-        'assets//Comp 110.gif',
-        'assets//Comp 111.gif',
-        'assets//Comp 112.gif',
-        'assets//Comp 113.gif',
-        'assets//Comp 114.gif',
-        'assets//Comp 115.gif',
-        'assets//Comp 116.gif',
-        'assets//Comp 117.gif',
-        'assets//Comp 118.gif',
-        'assets//Comp 119.gif',
-        'assets//Comp 120.gif',
-        'assets//Comp 121.gif',
-        'assets//Comp 122.gif',
-        'assets//Comp 123.gif',
-        'assets//Comp 124.gif',
-        'assets//Comp 125.gif',
-        'assets//Comp 126.gif',
-        'assets//Comp 127.gif',
-        'assets//Comp 128.gif',
-        'assets//Comp 129.gif',
-        'assets//Comp 130.gif',
-        'assets//Comp 132.gif',
+                'assets//Comp 101.gif',
+                'assets//Comp 102.gif',
+                'assets//Comp 103.gif',
+                'assets//Comp 104.gif',
+                'assets//Comp 105.gif',
+                'assets//Comp 106.gif',
+                'assets//Comp 107.gif',
+                'assets//Comp 108.gif',
+                'assets//Comp 109.gif',
+                'assets//Comp 110.gif',
+                'assets//Comp 111.gif',
+                'assets//Comp 112.gif',
+                'assets//Comp 113.gif',
+                'assets//Comp 114.gif',
+                'assets//Comp 115.gif',
+                'assets//Comp 116.gif',
+                'assets//Comp 117.gif',
+                'assets//Comp 118.gif',
+                'assets//Comp 119.gif',
+                'assets//Comp 120.gif',
+                'assets//Comp 121.gif',
+                'assets//Comp 122.gif',
+                'assets//Comp 123.gif',
+                'assets//Comp 124.gif',
+                'assets//Comp 125.gif',
+                'assets//Comp 126.gif',
+                'assets//Comp 127.gif',
+                'assets//Comp 128.gif',
+                'assets//Comp 129.gif',
+                'assets//Comp 130.gif',
+                'assets//Comp 132.gif',
             ];
 
-            let currentFrame = 1;
-            
+            let currentFrameIndex = -1; // Use -1 to ensure first frame loads correctly
+
+            // Define the scroll range for the animation
+            // This is the key to controlling the speed
+            // You'll likely need to experiment with this value.
+            // A good starting point is a multiple of windowHeight.
+            const animationScrollDistance = section1.offsetHeight; // Use section1's full height initially
+            // Or, if section1 is short and you want more scroll, use:
+            // const animationScrollDistance = window.innerHeight * 2; // E.g., two full screen scrolls
+
             function updateAnimationFrame() {
                 const scrollPosition = window.scrollY;
-                const section1Height = section1.offsetHeight;
+                const section1Top = section1.offsetTop; // Get the top position of section1
+                const section1Bottom = section1Top + section1.offsetHeight;
                 const windowHeight = window.innerHeight;
-                
-                // Calculate scroll percentage (0 to 1)
-                const scrollPercentage = Math.min(scrollPosition / (section1Height - windowHeight), 1);
-                
-                // Determine which frame to show
-                const frameIndex = Math.floor(scrollPercentage * (imageFrames.length - 1));
-                
-                if (frameIndex !== currentFrame) {
-                    currentFrame = frameIndex;
-                    animatedPhoto.src = imageFrames[currentFrame];
+
+                // Define the start and end scroll points for the animation
+                // The animation starts when section1 enters the viewport (or slightly before)
+                // and ends when it completely leaves the viewport, or just before section2 starts.
+
+                // Option 1: Animation covers the full scroll height of section1
+                // const animationStartScroll = section1Top;
+                // const animationEndScroll = section1Bottom - windowHeight; // Animation finishes when bottom of section1 hits top of viewport
+
+                // Option 2 (Recommended for a controlled transition):
+                // Animation starts when section1 comes into view, and finishes
+                // at a fixed scroll distance. This provides consistent speed regardless of section1's height.
+                const animationStartScroll = section1Top;
+                // You want the animation to *finish* before section2 is fully visible.
+                // Let's make it finish when the top of section2 reaches the viewport.
+                const section2Top = section2.offsetTop;
+
+                // The total scroll range over which the animation plays
+                // This means the animation will complete over the distance from section1's top to section2's top.
+                const totalAnimationScrollRange = section2Top - animationStartScroll;
+
+                // Calculate a clamped scroll progress within the defined range
+                let scrollProgress = 0;
+                if (scrollPosition > animationStartScroll) {
+                    scrollProgress = (scrollPosition - animationStartScroll) / totalAnimationScrollRange;
+                }
+                scrollProgress = Math.min(Math.max(scrollProgress, 0), 1); // Clamp between 0 and 1
+
+                // Determine which frame to show based on scroll progress
+                // The last frame is imageFrames.length - 1
+                const frameIndex = Math.floor(scrollProgress * (imageFrames.length - 1));
+
+                if (frameIndex !== currentFrameIndex) {
+                    currentFrameIndex = frameIndex;
+                    animatedPhoto.src = imageFrames[currentFrameIndex];
                 }
             }
-            
-            window.addEventListener('scroll', updateAnimationFrame);
-            updateAnimationFrame(); // Initialize
-        }
 
+            // Preload images to prevent flickering during scroll
+            function preloadImages(imagePaths) {
+                imagePaths.forEach(path => {
+                    const img = new Image();
+                    img.src = path;
+                });
+            }
+
+            preloadImages(imageFrames); // Call preload on page load
+
+            window.addEventListener('scroll', updateAnimationFrame);
+            updateAnimationFrame(); // Initialize the first frame
+        }
+    }
+});
 // --- Scroll-based Photo Animation (Div-2: Services to Div-3) ---
 const servicesAnimatedPhoto = document.getElementById('services-animated-photo');
 const section3 = document.getElementById('section3');
