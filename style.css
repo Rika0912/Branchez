@@ -104,7 +104,6 @@ height: 80px;
 opacity: 1;
 top: 17px;
 left: 65px;
-
 }
 
 /* Navigation Styles */
@@ -122,11 +121,13 @@ left: 65px;
     font-weight: 600;
     transition: all 0.3s ease;
     padding: 5px 0;
+
 }
 
 .navbar .nav-item.active {
     text-decoration: underline;
     color: #FFFFFF;
+
 }
 
 .navbar .nav-item:hover:not(.active) {
